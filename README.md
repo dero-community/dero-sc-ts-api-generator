@@ -1,5 +1,7 @@
 # dero-sc-ts-api-generator
 
+Generate a TypeScript API based on a Smart Contract source code to allows easier development by exporting functions and required arguments.
+
 # Installation
 
 * Requires [`Bun.js`](https://bun.sh/)
