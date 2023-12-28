@@ -14,7 +14,7 @@ export default function buildAll(config: Config) {
     const distLibPath = `${distFolder}/lib.ts`;
     Bun.write(distLibPath, lib);
     if (config.build.target !== undefined) {
-      fs.mkdirSync(`${config.build.target}`);
+      fs.mkdirSync(`${config.build.target}`, { recursive: true });
       const libPath = `${config.build.target}/lib.ts`;
       Bun.write(libPath, lib);
     }
