@@ -3,11 +3,11 @@
   "description": "CLI tool to generate DERO Smart Contract APIs with a XSWD backend (`dero-xswd-api` package)",
   "module": "dstag.ts",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "bin": "dist/bin/dstag",
   "devDependencies": {
     "bun-types": "latest",
-    "dero-xswd-api": "^0.6.1-c"
+    "dero-xswd-api": "^0.6.2"
   },
   "scripts": {
     "postinstall": "bun run build",
