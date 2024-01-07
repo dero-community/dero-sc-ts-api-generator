@@ -155,25 +155,21 @@ export { getSCApi };
 }
 
 function generateFunction(f: FunctionType): any {
-  if (f.args.length == 0) {
-    return `${f.name}: f_scinvoke(xswd, scid, "${f.name}", [])`;
-  } else {
-    return `${f.name}: (args: { ${f.args
-      .map(
-        (arg) =>
-          `${arg.name}: ${arg.type == DVMType.Uint64 ? "Uint64" : "DVMString"}`
-      )
-      .join(
-        ";"
-      )} }) => ({scinvoke: (sc_dero_deposit?: Uint64, sc_token_deposit?: Uint64, ringsize?: Uint64) => 
+  return `${f.name}: (args: { ${f.args
+    .map(
+      (arg) =>
+        `${arg.name}: ${arg.type == DVMType.Uint64 ? "Uint64" : "DVMString"}`
+    )
+    .join(
+      ";"
+    )} }) => ({scinvoke: (sc_dero_deposit?: Uint64, sc_token_deposit?: Uint64, ringsize?: Uint64) => 
       f_scinvoke(xswd, scid, "${
         f.name
       }", to_args(args),sc_dero_deposit, sc_token_deposit, ringsize)(), transfer: (transfers: WalletTransfer[] = [], fees?: Uint64, ringsize?: Uint64) => f_transfer(xswd, scid, "${
-      f.name
-    }", to_args(args), transfers, fees, ringsize)(),
+    f.name
+  }", to_args(args), transfers, fees, ringsize)(),
       gas: (transfers: WalletTransfer[] = []) => f_scinvoke_gas(xswd, scid, "${
         f.name
       }", to_args(args), transfers)()
   })`;
-  }
 }
