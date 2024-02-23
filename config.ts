@@ -5,6 +5,7 @@ const configSchema = z.object({
   build: z.object({
     target: z.string().optional(),
   }),
+  ignore: z.optional(z.array(z.string())),
 });
 export type Config = z.infer<typeof configSchema>;
 

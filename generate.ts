@@ -138,14 +138,22 @@ export function generateApi(program: Program) {
   );
   console.log("Public functions: ", functions.map((f) => f.name).join(", "));
 
+  const generatedFunctions = functions
+    .map((f) => generateFunction(f))
+    .join(",\n    ");
+
   return `
-import { Api as XSWDApi, Hash, DVMString, Uint64, WalletTransfer } from "dero-xswd-api";
+import { Api as XSWDApi, Hash, ${
+    generatedFunctions.includes("DVMString") ? "DVMString, " : ""
+  }${
+    generatedFunctions.includes("Uint64") ? "Uint64, " : ""
+  }WalletTransfer } from "dero-xswd-api";
 import { f_getsc, f_transfer, f_scinvoke, f_scinvoke_gas, to_args } from "../lib";
 
 const getSCApi = (xswd: XSWDApi, scid: Hash) => {
   return {
     getSC: f_getsc(xswd, scid),
-    ${functions.map((f) => generateFunction(f)).join(",\n    ")}
+    ${generatedFunctions}
   };
 };
 

@@ -20,9 +20,14 @@ export default function buildAll(config: Config) {
     }
 
     fs.readdirSync(config.source)
-      .filter((path) => path.endsWith(".bas"))
+      .filter(
+        (path) =>
+          path.endsWith(".bas") &&
+          (config.ignore === undefined || config.ignore.indexOf(path) == -1)
+      )
       .forEach(async (path) => {
         const scName = path.slice(0, -4);
+
         path = `${config.source}/${path}`;
         const code = await Bun.file(path).text();
 
@@ -34,6 +39,7 @@ export default function buildAll(config: Config) {
           program.functions.map((f) => f.name).join(", ")
         );
 
+        // TODO use mapping for minified code
         const api = generateApi(program);
 
         fs.mkdirSync(`${distFolder}/${scName}`, { recursive: true });
