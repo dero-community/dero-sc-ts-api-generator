@@ -18,6 +18,7 @@ export default function buildAll(config: Config) {
       const libPath = `${config.build.target}/lib.ts`;
       Bun.write(libPath, lib);
     }
+    console.log("Ignored SCs: " + config.ignore || "none");
 
     fs.readdirSync(config.source)
       .filter((path) => path.endsWith(".bas"))
@@ -31,6 +32,7 @@ export default function buildAll(config: Config) {
         console.log(
           "SC: ",
           scName,
+          "(" + path + ")",
           "\nEvaluated: ",
           program.functions.map((f) => f.name).join(", ")
         );
@@ -45,12 +47,14 @@ export default function buildAll(config: Config) {
 
         if (
           config.build.target !== undefined &&
-          (config.ignore === undefined || config.ignore.indexOf(path) == -1) // prevent writing file if ignored in config
+          (config.ignore === undefined ||
+            config.ignore.indexOf(scName + ".bas") == -1) // prevent writing file if ignored in config
         ) {
           fs.mkdirSync(`${config.build.target}/${scName}`, { recursive: true });
 
           const apiPath = `${config.build.target}/${scName}/api.ts`;
           Bun.write(apiPath, api);
+          console.log(scName + " moved to target");
         }
       });
   } catch (error) {
