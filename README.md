@@ -29,6 +29,18 @@ Example `dstag.config.json` file:
 }
 ```
 
+you can also ignore some file so that they are built but not copied to the target
+
+```json
+{
+    "source": "src", // source folder with .bas files
+    "build": {
+        "target": "../frontend/src/api" // target folder in TS frontend app
+    },
+    "ignore": ["Test.bas"] // a test sc not needed in the target frontend
+}
+```
+
 ## Build
 
 ```sh

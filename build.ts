@@ -20,11 +20,7 @@ export default function buildAll(config: Config) {
     }
 
     fs.readdirSync(config.source)
-      .filter(
-        (path) =>
-          path.endsWith(".bas") &&
-          (config.ignore === undefined || config.ignore.indexOf(path) == -1)
-      )
+      .filter((path) => path.endsWith(".bas"))
       .forEach(async (path) => {
         const scName = path.slice(0, -4);
 
@@ -47,7 +43,10 @@ export default function buildAll(config: Config) {
         const distApiPath = `${distFolder}/${scName}/api.ts`;
         Bun.write(distApiPath, api);
 
-        if (config.build.target !== undefined) {
+        if (
+          config.build.target !== undefined &&
+          (config.ignore === undefined || config.ignore.indexOf(path) == -1) // prevent writing file if ignored in config
+        ) {
           fs.mkdirSync(`${config.build.target}/${scName}`, { recursive: true });
 
           const apiPath = `${config.build.target}/${scName}/api.ts`;
