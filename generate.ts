@@ -96,14 +96,15 @@ export function generateLib() {
       name: string;
       value: number | string;
     }[],
-    transfers: WalletTransfer[] = []
+    transfers: WalletTransfer[] = [],
+    needSigner?: boolean
   ) {
     return async () => {
       const addressResponse = await xswd.wallet.GetAddress();
       const [addressError, addressResult] = to<"wallet", "GetAddress", Result>(
         addressResponse
       );
-      if (addressError) {
+      if (addressError && needSigner) {
         throw "could not get address: " + addressError.message;
       }
   
